@@ -1,79 +1,53 @@
-import tkinter as tk
-from  tkinter import filedialog, Text
-import os
-import cv2
-root = tk.Tk()
-apps = []
+import FlannMatch as fl
+import SiftMatch as sm
+import FeatureDetector as fd
+import  HarrisCornerDetector as hcd
+from matplotlib import pyplot as plt
 
-if os.path.isfile('save.txt'):
-    with open('save.txt','r') as f:
-        tempApps = f.read()
-        tempApps.split(',')
-        apps = [x for x in tempApps if x.strip()]
+#plt.subplot(1,2,1);plt.imshow(fl.Flann("ImageQuery/Fenerbahce.jpg","ImageQuery/fb-gs.jpg"));plt.title("Flann")
+#plt.subplot(1,2,2);plt.imshow(sm.Sift("ImageQuery/Fenerbahce.jpg","ImageQuery/fb-gs.jpg")) ;plt.title("Sift")
+#plt.subplot(2,2,1);plt.imshow(hcd.HarrisCorner("ImageQuery/Fenerbahce.jpg")) ;plt.title("Harris");
+#plt.subplot(2,2,2);plt.imshow(fd.ORB("ImageQuery/Fenerbahce.jpg","ImageQuery/fb-gs.jpg"));plt.title("ORB");
+#plt.show()
+#plt.imshow(sfd.Surf("ImageQuery/Fenerbahce.jpg")); plt.show()
 
-def addApp():
-    
-    for widget in frame.winfo_children():
-        widget.destroy()
-        
-    filename = filedialog.askopenfilename(initialdir="/",title="Select File"
-                                          , filetypes=(("executables","*.exe"),("all files","*.*")))
-    apps.append(filename)
-    print(filename)
-    for app in apps:
-             label = tk.Label(frame,text=app,bg="gray") 
-             label.pack()
-             
-def saveFileToDir():
-    for widget in frame.winfo_children():
-        widget.destroy()
-    filename = filedialog.askopenfilename(initialdir="/",title="Select File"
-                                         , filetypes=(("executables","*.exe"),("all files","*.*")))         
-    dirName = '/ImageMatch'
-    if not os.path.exists(dirName):
-        os.mkdir(dirName)
-        print("Directory " , dirName ,  " Created ")
-    else:    
-        print("Directory " , dirName ,  " already exists")
-    os.chdir(dirName) 
-    print("Before saving")   
-    print(os.listdir(dirName))   
-    filename = 'cat.jpg'
-    cv2.imwrite(filename) 
-    print("After saving")  
-    print(os.listdir(dirName))  
-                                      
-def runApps():
-    
-    for app in apps:
-         os.startfile(app)
 
-canvas = tk.Canvas(root, height=700, width=700, bg="#263D42")
-canvas.pack()
 
-frame = tk.Frame(root, bg="white")
-frame.place(relwidth=0.8, relheight=0.8, relx=0.1, rely=0.1)
+# create figure
+fig = plt.figure(figsize=(10, 7))
 
-openFile = tk.Button(root, text="OpenFile",padx=10,
-                     pady=5,fg="white",bg="blue",command=addApp)
+# setting values to rows and column variables
+rows = 2
+columns = 2
 
-openFile.pack()
+# Adds a subplot at the 1st position
+fig.add_subplot(rows, columns, 1)
 
-runapps = tk.Button(root, text="RunApps",padx=10,
-                     pady=5,fg="white",bg="blue", command=runApps)
+# showing image
+plt.imshow(fl.Flann("ImageQuery/Fenerbahce.jpg","ImageQuery/fb-gs.jpg"))
+plt.axis('off')
+plt.title("First")
 
-runapps.pack()
+# Adds a subplot at the 2nd position
+fig.add_subplot(rows, columns, 2)
 
-savedir = tk.Button(root, text="UploadImage", padx=10,pady=5,fg="white"
-                    ,bg="blue", command=saveFileToDir)
-savedir.pack()
+# showing image
+plt.imshow(sm.Sift("ImageQuery/Fenerbahce.jpg","ImageQuery/fb-gs.jpg"))
+plt.axis('off')
+plt.title("Second")
 
-for app in apps:
-    label = tk.Label(frame,text=app)
-    label.pack()
-    
-root.mainloop()
+# Adds a subplot at the 3rd position
+fig.add_subplot(rows, columns, 3)
 
-with open('save.txt','w') as f:
-    for app in apps:
-        f.write(app + ',')
+# showing image
+plt.imshow(hcd.HarrisCorner("ImageQuery/Fenerbahce.jpg"))
+plt.axis('off')
+plt.title("Third")
+
+# Adds a subplot at the 4th position
+fig.add_subplot(rows, columns, 4)
+
+# showing image
+plt.imshow(fd.ORB("ImageQuery/Fenerbahce.jpg","ImageQuery/fb-gs.jpg"))
+plt.axis('off')
+plt.title("Fourth")

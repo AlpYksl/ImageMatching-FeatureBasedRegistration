@@ -58,4 +58,6 @@ while True:
                     ,cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),2)
 
     cv2.imshow('img2',imgOriginal)
-    cv2.waitKey(1)
+    # Exit OpenCV
+    if cv2.waitKey(0) & 0xff == 27:
+        cv2.destroyAllWindows()
