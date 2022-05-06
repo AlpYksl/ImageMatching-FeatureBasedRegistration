@@ -1,7 +1,7 @@
 import tkinter as tk
 from  tkinter import filedialog, Text
 import os
-
+import cv2
 root = tk.Tk()
 apps = []
 
@@ -22,7 +22,27 @@ def addApp():
     print(filename)
     for app in apps:
              label = tk.Label(frame,text=app,bg="gray") 
-             label.pack()                              
+             label.pack()
+             
+def saveFileToDir():
+    for widget in frame.winfo_children():
+        widget.destroy()
+    filename = filedialog.askopenfilename(initialdir="/",title="Select File"
+                                         , filetypes=(("executables","*.exe"),("all files","*.*")))         
+    dirName = '/ImageMatch'
+    if not os.path.exists(dirName):
+        os.mkdir(dirName)
+        print("Directory " , dirName ,  " Created ")
+    else:    
+        print("Directory " , dirName ,  " already exists")
+    os.chdir(dirName) 
+    print("Before saving")   
+    print(os.listdir(dirName))   
+    filename = 'cat.jpg'
+    cv2.imwrite(filename) 
+    print("After saving")  
+    print(os.listdir(dirName))  
+                                      
 def runApps():
     
     for app in apps:
@@ -43,6 +63,10 @@ runapps = tk.Button(root, text="RunApps",padx=10,
                      pady=5,fg="white",bg="blue", command=runApps)
 
 runapps.pack()
+
+savedir = tk.Button(root, text="UploadImage", padx=10,pady=5,fg="white"
+                    ,bg="blue", command=saveFileToDir)
+savedir.pack()
 
 for app in apps:
     label = tk.Label(frame,text=app)
